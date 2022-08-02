@@ -1,0 +1,8 @@
+.experience, .education {
+    border: 1px solid black;
+    width: fit-content;
+    margin: 20px;
+}
+label {
+    width: 200px;
+}
