@@ -8,8 +8,8 @@ class Field extends React.Component {
     render() {
         return(
             <div>
-                <label>{this.props.label}</label>
-                <input id={this.props.id} onChange={this.props.handleChange} required></input>
+                <input id={this.props.id} onChange={this.props.handleChange} 
+                className={`input ${this.props.className}`} placeholder={this.props.label} required></input>
             </div>
         );
     }

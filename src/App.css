@@ -1,8 +1,15 @@
 .App {
-  text-align: center;
-  border: 1px solid black;
+}
+.lists-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
 }
 
+.lists-container .list {
+  border: 1px solid black;
+  padding: 20px;
+}
 
 
 

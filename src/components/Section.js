@@ -8,14 +8,13 @@ class Section extends React.Component {
         super(props);
     }
 
- 
-
     render() {
         return(
             <div className={this.props.className}>
+                <h4>{this.props.title}</h4>
                 <form onSubmit={this.props.handleFormSubmit} id={this.props.formType}>
                 {this.props.createFields(this.props.labels)}
-                <button type='submit'>Submit</button>
+                { this.props.hideSubmit ? null : <button type='submit'>Submit</button>}
                 </form>
             </div>
         );
