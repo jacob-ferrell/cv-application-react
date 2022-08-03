@@ -24,6 +24,7 @@ class App extends React.Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.edit = this.edit.bind(this);
+    this.getFiltered = this.getFiltered.bind(this);
 
   }
 
@@ -52,22 +53,29 @@ class App extends React.Component {
     }
     if (event.target.id == 'work-form') {
       assignValues(experience);
+      let id;
+      if (this.state.edit.work) {
+        id = this.state.edit.work.id;
+        data.id = id;
+      } else id = '';
+      const filtered = this.getFiltered('work', id);
       this.setState({
-        work: [...this.state.work, data]
+        work: filtered.concat([data])
       })
     } else if (event.target.id == 'school-form') {
       assignValues(school);
+      let id;
+      if (this.state.edit.education) {
+        id = this.state.edit.education.id;
+        data.id = id;
+      } else id = '';
+      const filtered = this.getFiltered('education', id);
       this.setState({
-        education: [...this.state.education, data]
-      })
-    } else {
-      assignValues(generalInfo);
-      Object.keys(data).forEach(key => {
-        this.setState({ [key]: data[key] })
+        education: filtered.concat([data])
       })
     }
+    this.setState({ edit: { work: null, education: null } }) 
     event.preventDefault();
-    event.target.reset();
   }
 
   createState = labels => {
@@ -75,37 +83,53 @@ class App extends React.Component {
     labels.map(e => e.toLowerCase().replace(/\s/g, '-')).forEach(label => obj[label.toLowerCase()] = '');
     obj.work = [];
     obj.education = [];
+    obj.edit = { work: null, education: null };
     return obj;
 }
 
   createFields = labels => {
     return labels.map(label => {
       return (
-          <Field label={label} key={this.formatKey(label)}
+          <Field label={label} 
+          key={this.formatKey(label)} 
+          values={this.state}
           className={this.formatKey(label)}
-           id={label.toLowerCase()} handleChange={this.handleChange}/>
+          id={this.formatKey(label)} 
+          handleChange={this.handleChange}/>
       );
   })
+  }
+
+  getFiltered = (type, id) => {
+    return this.state[type].filter(x => x.id !== id)
   }
 
   deleteItem = event => {
     console.log(this.state)
     const id = event.target.name;
-    const getFiltered = type => this.state[type].filter(x => x.id !== id)
     this.setState({ 
-      work: getFiltered('work'), 
-      education: getFiltered('education')
+      work: this.getFiltered('work', id), 
+      education: this.getFiltered('education', id)
     })
   }
 
   edit = event => {
-    const items = this.state.work.concat(this.state.education);
     const id = event.target.name;
-    const item = items.find(x => x.id == id);
+    let type;
+    let item = this.state.work.find(x => x.id == id)
+    if (item) {
+      type = 'work'
+    } else {
+      type = 'education';
+      item = this.state.education.find(x => x.id == id)
+    }
+    //const items = this.state.work.concat(this.state.education);
+    //const item = items.find(x => x.id == id);
     console.log(item)
     Object.keys(item).forEach(key => {
       this.setState({ [key]: item[key]})
     })
+    this.setState({ edit: { [type]: item } });
     console.log(this.state)
   }
 

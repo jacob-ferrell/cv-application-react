@@ -10,7 +10,7 @@ class ListDisplay extends React.Component {
     displayList = list => {
         return list.map(item => {
             return(
-                <li key={uniqid()}>{item['company-name']}
+                <li key={uniqid()}>{this.props.type == 'work' ? item['company-name'] : item['school-name']}
                     <button name={item.id} onClick={this.props.deleteItem}>Delete</button>
                     <button name={item.id} onClick={this.props.edit}>Edit</button>
                 </li>
