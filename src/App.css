@@ -1,14 +1,52 @@
+html {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: grey;
+}
+#root {
+  height: 100%;
+}
+.main-content {
+  display: flex;
+}
 .App {
+  height: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
 .lists-container {
   display: flex;
+  flex-direction: column;
   gap: 20px;
   justify-content: center;
 }
 
 .lists-container .list {
+  width: 300px;
   border: 1px solid black;
   padding: 20px;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 0px;
+  
+}
+
+.list-item {
+  padding-left: 3px;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(128, 128, 128, 0.432);
+
+}
+.list-item:hover {
+  background-color: rgba(128, 128, 128, 0.432);
+
 }
 
 

@@ -25,6 +25,7 @@ class App extends React.Component {
     this.deleteItem = this.deleteItem.bind(this);
     this.edit = this.edit.bind(this);
     this.getFiltered = this.getFiltered.bind(this);
+    this.canSubmit = this.canSubmit.bind(this);
 
   }
 
@@ -123,46 +124,67 @@ class App extends React.Component {
       type = 'education';
       item = this.state.education.find(x => x.id == id)
     }
-    //const items = this.state.work.concat(this.state.education);
-    //const item = items.find(x => x.id == id);
-    console.log(item)
     Object.keys(item).forEach(key => {
       this.setState({ [key]: item[key]})
     })
     this.setState({ edit: { [type]: item } });
-    console.log(this.state)
+  }
+
+  canSubmit = () => {
+    const state = this.state;
+    const generalInfoFilled = state.name && state.email && state['phone-number'];
+    const education = state.education.length;
+    const experience = state.work.length;
+    console.log('poop')
+    console.log(generalInfoFilled, education, experience)
+    return generalInfoFilled && education && experience;
   }
 
     render() {
       return (
         <div className="App">
-          <Section createFields={this.createFields} 
-          labels={['Name', 'Email', 'Phone-Number']}
-          handleFormSubmit={this.handleFormSubmit}
-          title='General Info'
-          hideSubmit={true}
-          className='general-info'/>
-          <Section createFields={this.createFields} 
-          labels={['School Name', 'Title of Study', 'Date of Study']}
-          handleFormSubmit={this.handleFormSubmit}
-          formType='school-form'
-          title='Education'
-          className={'education'}/>
-          <Section createFields={this.createFields} 
-          labels={[
-            'Company Name', 'Position', 'Title', 'Main Tasks', 
-            'Date Started', 'Date Ended'
-          ]}
-          handleFormSubmit={this.handleFormSubmit}
-          title='Work Experience'
-          formType='work-form'
-          className='experience'/>
-          <div className='lists-container'>
-            <ListDisplay title='Work Experience' list={this.state.work}
-            deleteItem={this.deleteItem} type='work' edit={this.edit}/>
-            <ListDisplay title='Education' list={this.state.education}
-            deleteItem={this.deleteItem} type='education' edit={this.edit}/>
+          <div className='main-content'>
+            <div className='sections-container'>
+              <Section createFields={this.createFields} 
+              labels={['Name', 'Email', 'Phone-Number']}
+              handleFormSubmit={this.handleFormSubmit}
+              title='General Info'
+              hideSubmit={true}
+              className='general-info'/>
+              <Section createFields={this.createFields} 
+              labels={['School Name', 'Title of Study', 'Date of Study']}
+              handleFormSubmit={this.handleFormSubmit}
+              formType='school-form'
+              title='Education'
+              edit = {this.state.edit.education}
+              className={'education'}/>
+              <Section createFields={this.createFields} 
+              labels={[
+                'Company Name', 'Position', 'Title', 'Main Tasks', 
+                'Date Started', 'Date Ended'
+              ]}
+              handleFormSubmit={this.handleFormSubmit}
+              title='Work Experience'
+              formType='work-form'
+              edit={this.state.edit.work}
+              className='experience'/>
+            </div>
+            <div className='lists-container'>
+              <div className='list'>
+                <h3>General Info</h3>
+                <ul>
+                  <li>{this.state.name}</li>
+                  <li>{this.state.email}</li>
+                  <li>{this.state['phone-number']}</li>
+                </ul>
+              </div>
+              <ListDisplay title='Work Experience' list={this.state.work}
+              deleteItem={this.deleteItem} type='work' edit={this.edit}/>
+              <ListDisplay title='Education' list={this.state.education}
+              deleteItem={this.deleteItem} type='education' edit={this.edit}/>
+            </div>
           </div>
+          {this.canSubmit() ? <button>Submit Resume</button> : null }
         </div>
         
       );

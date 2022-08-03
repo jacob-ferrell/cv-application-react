@@ -10,10 +10,13 @@ class ListDisplay extends React.Component {
     displayList = list => {
         return list.map(item => {
             return(
-                <li key={uniqid()}>{this.props.type == 'work' ? item['company-name'] : item['school-name']}
+                <div className='list-item' key={uniqid()}>{this.props.type == 'work' ? 
+                item['company-name'] : item['school-name']}
+                  <div className='buttons-container'>
                     <button name={item.id} onClick={this.props.deleteItem}>Delete</button>
                     <button name={item.id} onClick={this.props.edit}>Edit</button>
-                </li>
+                  </div>
+                </div>
             );
         })
     }
@@ -22,7 +25,7 @@ class ListDisplay extends React.Component {
         return(
             <div className='list'>
                 <h3>{this.props.title}</h3>
-                <ul>{this.displayList(this.props.list)}</ul>
+                {this.displayList(this.props.list)}
             </div>
         );
     }
